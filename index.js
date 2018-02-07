@@ -9,8 +9,18 @@
 
  io.on('connection', function(socket){
 	 socket.on('chat message', function(msg){
-		 console.log('message: ' + msg);
+		 io.emit('chat message', msg);
 	 });
+ });
+
+ /*broadcasting 'a user connected' message*/
+ io.on('connection', function(socket){
+   console.log('a user connected');
+   io.emit('chat message', 'A user connected');
+   socket.on('disconnect', function(){
+     console.log('user disconnected');
+     io.emit('chat message', 'A user disconnected');
+   });
  });
 
  http.listen(3000, function(){
